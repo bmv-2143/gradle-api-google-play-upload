@@ -83,3 +83,4 @@ vcs.xml
 
 # lint
 lint/
+/credentials/
