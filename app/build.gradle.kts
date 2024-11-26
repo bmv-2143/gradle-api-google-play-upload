@@ -9,6 +9,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.triplet.play)
+    id("GooglePlayPublishPlugin")
+}
+
+googlePlayPublishExtension {
+    trackToPublish.set("internal")
+    releaseName.set(getReleaseName())
 }
 
 val keystorePropertiesFile = rootProject.file("credentials/keystore.properties")
@@ -79,7 +85,7 @@ android {
         outputs.all {
             val output = this
             if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-                val projectName = rootProject.name.replace(" ", "_")
+                val projectName = rootProject.name.replace(" ", "")
                 output.outputFileName =
                     "${projectName}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.aab"
             }
@@ -91,7 +97,7 @@ play {
 //    enabled.set(false) // disable publishing to Play Store
 
     defaultToAppBundles.set(true)
-    releaseName.set("release-vc${android.defaultConfig.versionCode}-vn${android.defaultConfig.versionName}-${getTimestamp()}")
+    releaseName.set(getReleaseName())
     track.set("internal")
     defaultToAppBundles.set(true)
 
@@ -108,7 +114,6 @@ play {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -127,6 +132,9 @@ dependencies {
 }
 
 fun getTimestamp(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-HH-mm")
+    val dateFormat = SimpleDateFormat("yyyyMMdd-HHmm")
     return dateFormat.format(Date())
 }
+
+fun getReleaseName(): String =
+    "release-vc${android.defaultConfig.versionCode}-vn${android.defaultConfig.versionName}-${getTimestamp()}"
