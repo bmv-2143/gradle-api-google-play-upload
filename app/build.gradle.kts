@@ -75,22 +75,25 @@ android {
         }
     }
 
-    applicationVariants.configureEach {
-        outputs.configureEach {
-            (this as? ApkVariantOutputImpl)?.outputFileName =
-                "${rootProject.name}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.apk"
-        }
-
-        // Rename the output AAB file
-        outputs.all {
-            val output = this
-            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-                val projectName = rootProject.name.replace(" ", "")
-                output.outputFileName =
-                    "${projectName}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.aab"
-            }
-        }
-    }
+//    applicationVariants.configureEach {
+//        outputs.configureEach {
+//            (this as? ApkVariantOutputImpl)?.outputFileName =
+//                "${rootProject.name}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.apk"
+//        }
+//
+//        // Rename the output AAB file
+//        outputs.all {
+//            val output = this
+//            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+//                val projectName = rootProject.name.replace(" ", "")
+//
+//                println("INITIAL NAME: " + output.outputFileName)
+//
+//                output.outputFileName =
+//                    "${projectName}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.aab"
+//            }
+//        }
+//    }
 }
 
 play {
@@ -137,4 +140,4 @@ fun getTimestamp(): String {
 }
 
 fun getReleaseName(): String =
-    "release-vc${android.defaultConfig.versionCode}-vn${android.defaultConfig.versionName}-${getTimestamp()}"
+    "${android.buildTypes.getByName(android.buildTypes.first().name).name}-vc${android.defaultConfig.versionCode}-vn${android.defaultConfig.versionName}-${getTimestamp()}"

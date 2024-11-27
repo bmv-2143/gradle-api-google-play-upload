@@ -1,4 +1,10 @@
+rootProject.name = "HomeworkGradleAPI"
+include(":app")
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -18,7 +24,3 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
-rootProject.name = "Homework Gradle API"
-include(":app")
- 

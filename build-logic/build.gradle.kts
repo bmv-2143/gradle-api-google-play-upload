@@ -22,3 +22,9 @@ open class PublishingConfig {
 }
 
 extensions.create("publishingConfig", PublishingConfig::class)
+
+dependencies {
+    implementation("com.android.tools.build:gradle:8.2.0")
+//    implementation(libs.versions.agp)
+//    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+}
