@@ -22,18 +22,21 @@ class GooglePlayPublishPlugin : Plugin<Project> {
         androidComponents.onVariants { variant ->
             val artifacts = variant.artifacts.get(SingleArtifact.APK)
 
-            println("VARIANT NAME: " + variant.name)
+            if (variant.name == "release") {
+                project.tasks.register(
+                    "myGooglePlayPublishTask",
+                    GooglePlayPublishTask::class.java
+                )
+                    .configure {
+                        group = "google play group"
+                        description = "This is Google Play Publish Task"
+                        trackToPublish.set(googlePlayPublishExtension.trackToPublish)
+                        releaseName.set(googlePlayPublishExtension.releaseName)
 
-            project.tasks.register("MyGooglePlayPublishTask_${variant.name}", GooglePlayPublishTask::class.java)
-                .configure {
-                    group = "GooglePlayGroup"
-                    description = "This is Google Play Publish Task"
-                    trackToPublish.set(googlePlayPublishExtension.trackToPublish)
-                    releaseName.set(googlePlayPublishExtension.releaseName)
-
-                    aabDir.set(artifacts)
-//                    dependsOn("bundleRelease")
-                }
+                        aabDir.set(artifacts)
+                        //                    dependsOn("bundleRelease")
+                    }
+            }
 
         }
 
