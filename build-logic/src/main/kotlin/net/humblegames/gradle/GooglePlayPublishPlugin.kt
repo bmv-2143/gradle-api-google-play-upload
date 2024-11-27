@@ -5,6 +5,8 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
+import org.gradle.api.provider.Provider
 
 class GooglePlayPublishPlugin : Plugin<Project> {
 
@@ -20,22 +22,30 @@ class GooglePlayPublishPlugin : Plugin<Project> {
             )
 
         androidComponents.onVariants { variant ->
-            val artifacts = variant.artifacts.get(SingleArtifact.APK)
+            val artifacts: Provider<Directory> =
+                variant.artifacts.get(SingleArtifact.BUNDLE).flatMap { bundleFile ->
+                    project.layout.dir(
+                        project.provider { bundleFile.asFile.parentFile }
+                    )
+                }
 
             if (variant.name == "release") {
-                project.tasks.register(
+                val publishTask = project.tasks.register(
                     "myGooglePlayPublishTask",
                     GooglePlayPublishTask::class.java
-                )
-                    .configure {
-                        group = "google play group"
-                        description = "This is Google Play Publish Task"
-                        trackToPublish.set(googlePlayPublishExtension.trackToPublish)
-                        releaseName.set(googlePlayPublishExtension.releaseName)
+                ) {
+                    group = "google play group"
+                    description = "This is Google Play Publish Task"
+                    trackToPublish.set(googlePlayPublishExtension.trackToPublish)
+                    releaseName.set(googlePlayPublishExtension.releaseName)
 
-                        aabDir.set(artifacts)
-                        //                    dependsOn("bundleRelease")
-                    }
+                    aabDir.set(artifacts)
+                }
+
+                publishTask.configure {
+                    dependsOn("bundleRelease")
+//                    dependsOn("bundle${variant.name.capitalize()}")
+                }
             }
 
         }
