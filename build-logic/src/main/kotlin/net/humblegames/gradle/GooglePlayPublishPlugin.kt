@@ -2,6 +2,7 @@ package net.humblegames.gradle
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.google.api.services.androidpublisher.model.LocalizedText
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -40,11 +41,29 @@ class GooglePlayPublishPlugin : Plugin<Project> {
                     releaseName.set(googlePlayPublishExtension.releaseName)
 
                     aabDir.set(artifacts)
+
+                    val publisher = GooglePlayPublisher(
+                        "credentials/gradle-upload-apk-to-play.json"
+                    )
+
+                    doLast {
+                        publisher.uploadAab(
+//                            pathToAab = artifacts.get().asFile.resolve(renamedAabPath).path,
+                            pathToAab = artifacts.get().asFile.resolve("app-release.aab").path,
+                            trackName = "internal",
+                            packageName = "net.humblegames.hw_gradle_api",
+                            rolloutPercentage = 0.0,
+                            trackReleaseName = "Release Name From Gradle",
+                            releaseNotes = listOf(
+                                LocalizedText().setLanguage("en-US")
+                                    .setText("Initial release for internal testing from Gradle Script."),
+                            )
+                        )
+                    }
                 }
 
                 publishTask.configure {
-                    dependsOn("bundleRelease")
-//                    dependsOn("bundle${variant.name.capitalize()}")
+                    dependsOn("bundle${variant.name.capitalize()}") // => "bundleRelease"
                 }
             }
 
