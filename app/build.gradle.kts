@@ -24,8 +24,8 @@ android {
         applicationId = "net.humblegames.hw_gradle_api"
         minSdk = 26
         targetSdk = 34
-        versionCode = 8
-        versionName = "1.0.7"
+        versionCode = 9
+        versionName = "1.0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -78,7 +78,7 @@ googlePlayPublishExtension {
     releaseNotes.set(
         listOf(
             LocalizedText().setLanguage("en-US")
-                .setText("Another release notes from Gradle 2"),
+                .setText("Another release notes from Gradle 3"),
         )
     )
 }

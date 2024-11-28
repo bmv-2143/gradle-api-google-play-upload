@@ -1,7 +1,10 @@
 package net.humblegames.gradle
 
+import com.android.build.gradle.AppExtension
 import com.google.api.services.androidpublisher.model.LocalizedText
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
+import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -33,7 +36,21 @@ abstract class GooglePlayPublishTask : DefaultTask() {
 
     @TaskAction
     fun act() {
-        println("GooglePlayPublishTask: ACTION")
-        println(aabDir.get().asFile.listFiles().joinToString(", \n"))
+        val publisher = GooglePlayPublisher(
+            "credentials/gradle-upload-apk-to-play.json"
+        )
+        publisher.uploadAab(
+            pathToAab = aabDir.get().asFile.resolve("app-release.aab").path,
+            trackName = trackToPublish.get(),
+            packageName = getApplicationId(project),
+            rolloutPercentage = rolloutPercentage.get(),
+            trackReleaseName = releaseName.get(),
+            releaseNotes = releaseNotes.get(),
+            status = "draft"
+        )
     }
+
+    private fun getApplicationId(project: Project) =
+        project.extensions.getByType(AppExtension::class.java)
+            .defaultConfig.applicationId ?: throw GradleException("ApplicationId not found")
 }
