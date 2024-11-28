@@ -5,8 +5,6 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.Directory
-import org.gradle.api.provider.Provider
 
 class GooglePlayPublishPlugin : Plugin<Project> {
 
@@ -21,15 +19,8 @@ class GooglePlayPublishPlugin : Plugin<Project> {
             )
 
         androidComponents.onVariants { variant ->
-            val artifacts: Provider<Directory> =
-                variant.artifacts.get(SingleArtifact.BUNDLE).flatMap { bundleFile ->
-                    project.layout.dir(
-                        project.provider { bundleFile.asFile.parentFile }
-                    )
-                }
-
             if (variant.name == "release") {
-                val publishTask = project.tasks.register(
+                project.tasks.register(
                     "myGooglePlayPublishTask",
                     GooglePlayPublishTask::class.java
                 ) {
@@ -40,11 +31,12 @@ class GooglePlayPublishPlugin : Plugin<Project> {
                     releaseName.set(googlePlayPublishExtension.releaseName)
                     rolloutPercentage.set(googlePlayPublishExtension.rolloutPercentage)
                     releaseNotes.set(googlePlayPublishExtension.releaseNotes)
-                    aabDir.set(artifacts)
-                }
 
-                publishTask.configure {
-                    dependsOn("bundle${variant.name.capitalize()}") // => "bundleRelease"
+                    aabDir.set(
+                        project.layout.dir(
+                            variant.artifacts.get(SingleArtifact.BUNDLE).map { it.asFile.parentFile }
+                        )
+                    )
                 }
             }
         }
