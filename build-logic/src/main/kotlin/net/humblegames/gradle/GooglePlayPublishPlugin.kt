@@ -2,7 +2,7 @@ package net.humblegames.gradle
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.google.api.services.androidpublisher.model.LocalizedText
+import com.android.build.gradle.AppExtension
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -37,9 +37,11 @@ class GooglePlayPublishPlugin : Plugin<Project> {
                 ) {
                     group = "google play group"
                     description = "This is Google Play Publish Task"
+
                     trackToPublish.set(googlePlayPublishExtension.trackToPublish)
                     releaseName.set(googlePlayPublishExtension.releaseName)
-
+                    rolloutPercentage.set(googlePlayPublishExtension.rolloutPercentage)
+                    releaseNotes.set(googlePlayPublishExtension.releaseNotes)
                     aabDir.set(artifacts)
 
                     val publisher = GooglePlayPublisher(
@@ -48,16 +50,13 @@ class GooglePlayPublishPlugin : Plugin<Project> {
 
                     doLast {
                         publisher.uploadAab(
-//                            pathToAab = artifacts.get().asFile.resolve(renamedAabPath).path,
                             pathToAab = artifacts.get().asFile.resolve("app-release.aab").path,
-                            trackName = "internal",
-                            packageName = "net.humblegames.hw_gradle_api",
-                            rolloutPercentage = 0.0,
-                            trackReleaseName = "Release Name From Gradle",
-                            releaseNotes = listOf(
-                                LocalizedText().setLanguage("en-US")
-                                    .setText("Initial release for internal testing from Gradle Script."),
-                            )
+                            trackName = trackToPublish.get(),
+                            packageName = getApplicationId(project),
+                            rolloutPercentage = rolloutPercentage.get(),
+                            trackReleaseName = releaseName.get(),
+                            releaseNotes = releaseNotes.get(),
+                            status = "draft"
                         )
                     }
                 }
@@ -70,4 +69,8 @@ class GooglePlayPublishPlugin : Plugin<Project> {
         }
 
     }
+
+    private fun getApplicationId(project: Project) =
+        project.extensions.getByType(AppExtension::class.java)
+            .defaultConfig.applicationId ?: throw GradleException("ApplicationId not found")
 }

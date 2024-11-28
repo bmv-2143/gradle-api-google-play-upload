@@ -1,7 +1,9 @@
 package net.humblegames.gradle
 
+import com.google.api.services.androidpublisher.model.LocalizedText
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -18,6 +20,12 @@ abstract class GooglePlayPublishTask : DefaultTask() {
 
     @get:Input
     abstract val releaseName: Property<String>
+
+    @get:Input
+    abstract val rolloutPercentage: Property<Double>
+
+    @get:Input
+    abstract val releaseNotes: ListProperty<LocalizedText>
 
     @get:PathSensitive(PathSensitivity.NONE)
     @get:InputDirectory

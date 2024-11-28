@@ -21,6 +21,7 @@ class GooglePlayPublisher(private val credentialsJsonPath: String) {
         rolloutPercentage: Double,
         trackReleaseName: String,
         releaseNotes: List<LocalizedText>,
+        status: String,
     ) {
         // Set up your service account credentials
         val service = createPlayStorePublisher(credentialsJsonPath)
@@ -44,7 +45,7 @@ class GooglePlayPublisher(private val credentialsJsonPath: String) {
             listOf(
                 TrackRelease().setName(trackReleaseName)
                     .setVersionCodes(listOf(bundle.versionCode.toLong()))
-                    .setStatus("draft")
+                    .setStatus(status)
 //                    .setUserFraction(rolloutPercentage)
                     .setReleaseNotes(releaseNotes)
             )

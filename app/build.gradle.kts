@@ -1,5 +1,5 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+import com.google.api.services.androidpublisher.model.LocalizedText
 import java.io.FileInputStream
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -10,11 +10,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.triplet.play)
     id("GooglePlayPublishPlugin")
-}
-
-googlePlayPublishExtension {
-    trackToPublish.set("internal")
-    releaseName.set(getReleaseName())
 }
 
 val keystorePropertiesFile = rootProject.file("credentials/keystore.properties")
@@ -29,8 +24,8 @@ android {
         applicationId = "net.humblegames.hw_gradle_api"
         minSdk = 26
         targetSdk = 34
-        versionCode = 5
-        versionName = "1.0.4"
+        versionCode = 8
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -74,26 +69,18 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
 
-//    applicationVariants.configureEach {
-//        outputs.configureEach {
-//            (this as? ApkVariantOutputImpl)?.outputFileName =
-//                "${rootProject.name}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.apk"
-//        }
-//
-//        // Rename the output AAB file
-//        outputs.all {
-//            val output = this
-//            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-//                val projectName = rootProject.name.replace(" ", "")
-//
-//                println("INITIAL NAME: " + output.outputFileName)
-//
-//                output.outputFileName =
-//                    "${projectName}_vn${versionName}_vc${versionCode}_${buildType.name}_${getTimestamp()}.aab"
-//            }
-//        }
-//    }
+googlePlayPublishExtension {
+    trackToPublish.set("internal")
+    releaseName.set(getReleaseName())
+    rolloutPercentage.set(10.0)
+    releaseNotes.set(
+        listOf(
+            LocalizedText().setLanguage("en-US")
+                .setText("Another release notes from Gradle 2"),
+        )
+    )
 }
 
 play {
@@ -140,4 +127,7 @@ fun getTimestamp(): String {
 }
 
 fun getReleaseName(): String =
-    "${android.buildTypes.getByName(android.buildTypes.first().name).name}-vc${android.defaultConfig.versionCode}-vn${android.defaultConfig.versionName}-${getTimestamp()}"
+    project.rootProject.name +
+        "-vc${android.defaultConfig.versionCode}" +
+        "-vn${android.defaultConfig.versionName}" +
+        "-${getTimestamp()}"
