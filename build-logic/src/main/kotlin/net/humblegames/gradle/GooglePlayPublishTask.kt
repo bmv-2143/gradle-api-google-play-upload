@@ -25,6 +25,9 @@ abstract class GooglePlayPublishTask : DefaultTask() {
     abstract val releaseName: Property<String>
 
     @get:Input
+    abstract val status: Property<String>
+
+    @get:Input
     abstract val rolloutPercentage: Property<Double>
 
     @get:Input
@@ -46,7 +49,7 @@ abstract class GooglePlayPublishTask : DefaultTask() {
             rolloutPercentage = rolloutPercentage.get(),
             trackReleaseName = releaseName.get(),
             releaseNotes = releaseNotes.get(),
-            status = "draft"
+            status = status.get(),
         )
     }
 

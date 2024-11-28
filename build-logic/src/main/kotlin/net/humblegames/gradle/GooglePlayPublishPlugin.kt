@@ -31,6 +31,7 @@ class GooglePlayPublishPlugin : Plugin<Project> {
                     releaseName.set(googlePlayPublishExtension.releaseName)
                     rolloutPercentage.set(googlePlayPublishExtension.rolloutPercentage)
                     releaseNotes.set(googlePlayPublishExtension.releaseNotes)
+                    status.set(googlePlayPublishExtension.status)
 
                     aabDir.set(
                         project.layout.dir(

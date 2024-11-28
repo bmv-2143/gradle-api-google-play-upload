@@ -46,7 +46,7 @@ class GooglePlayPublisher(private val credentialsJsonPath: String) {
                 TrackRelease().setName(trackReleaseName)
                     .setVersionCodes(listOf(bundle.versionCode.toLong()))
                     .setStatus(status)
-//                    .setUserFraction(rolloutPercentage)
+                    .setUserFraction(rolloutPercentage)
                     .setReleaseNotes(releaseNotes)
             )
         )
@@ -55,7 +55,7 @@ class GooglePlayPublisher(private val credentialsJsonPath: String) {
 
         // Commit the edit
         val commitRequest = edits.commit(packageName, editId)
-        val committedEdit: AppEdit = commitRequest.execute()
+        commitRequest.execute()
         println("AAB file uploaded successfully: ${bundle.versionCode}")
     }
 

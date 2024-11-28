@@ -10,5 +10,6 @@ interface GooglePlayPublishExtension {
     val releaseName: Property<String>
     val rolloutPercentage: Property<Double>
     val releaseNotes: ListProperty<LocalizedText>
+    val status: Property<String>
 
 }

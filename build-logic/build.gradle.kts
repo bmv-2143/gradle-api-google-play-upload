@@ -15,14 +15,6 @@ gradlePlugin {
     }
 }
 
-//open class PublishingConfig {
-//    var track: String = "internal"
-//    var rolloutPercentage: Double = 1.0
-//    var releaseNotes: Map<String, String> = mapOf()
-//}
-//
-//extensions.create("publishingConfig", PublishingConfig::class)
-
 dependencies {
     implementation("com.android.tools.build:gradle:8.2.0")
 

@@ -24,8 +24,8 @@ android {
         applicationId = "net.humblegames.hw_gradle_api"
         minSdk = 26
         targetSdk = 34
-        versionCode = 10
-        versionName = "1.0.9"
+        versionCode = 11
+        versionName = "1.0.10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -71,36 +71,29 @@ android {
     }
 }
 
+// My implementation of the assignment:
 googlePlayPublishExtension {
     trackToPublish.set("internal")
     releaseName.set(getReleaseName())
-    rolloutPercentage.set(10.0)
+    rolloutPercentage.set(0.10)
+    status.set("inProgress")
     releaseNotes.set(
         listOf(
             LocalizedText().setLanguage("en-US")
-                .setText("Another release notes from Gradle 3"),
+                .setText("Another release notes from Gradle 4"),
         )
     )
 }
 
+// Not required by the assignment: upload via third party plugin:
+// https://github.com/Triple-T/gradle-play-publisher
 play {
-//    enabled.set(false) // disable publishing to Play Store
-
     defaultToAppBundles.set(true)
     releaseName.set(getReleaseName())
     track.set("internal")
     defaultToAppBundles.set(true)
-
-    releaseStatus.set(ReleaseStatus.DRAFT) // draft is created, app not publish to the track (to review)
-
-    // Staged rollout is not permitted on draft app
-//    releaseStatus.set(ReleaseStatus.IN_PROGRESS) // app is published to the selected track
-//    userFraction.set(0.10) // 10%
-
-//    releaseStatus.set(ReleaseStatus.COMPLETED) // app is published to the selected track
-
+    releaseStatus.set(ReleaseStatus.DRAFT)
     serviceAccountCredentials.set(file("../credentials/gradle-upload-apk-to-play.json"))
-    updatePriority.set(2)
 }
 
 dependencies {
