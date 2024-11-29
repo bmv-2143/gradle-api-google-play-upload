@@ -42,13 +42,15 @@ abstract class GooglePlayPublishTask : DefaultTask() {
     @get:Input
     abstract val credentialsJsonPath: Property<String>
 
-    @TaskAction
-    fun act() {
-        val publisher = GooglePlayPublisher(
+    private val publisher: GooglePlayPublisher by lazy {
+        GooglePlayPublisher(
             credentialsJsonPath.get(),
             getApplicationId(project),
         )
+    }
 
+    @TaskAction
+    fun act() {
         try {
             publisher.uploadAab(
                 pathToAab = aabDir.get().asFile.resolve("app-release.aab").path,
