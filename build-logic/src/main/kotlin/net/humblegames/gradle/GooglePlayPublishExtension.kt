@@ -6,6 +6,7 @@ import org.gradle.api.provider.Property
 
 interface GooglePlayPublishExtension {
 
+    val credentialsJsonPath: Property<String>
     val trackToPublish: Property<String>
     val releaseName: Property<String>
     val rolloutPercentage: Property<Double>

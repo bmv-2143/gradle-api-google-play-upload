@@ -39,10 +39,13 @@ abstract class GooglePlayPublishTask : DefaultTask() {
     @get:InputDirectory
     abstract val aabDir: DirectoryProperty
 
+    @get:Input
+    abstract val credentialsJsonPath: Property<String>
+
     @TaskAction
     fun act() {
         val publisher = GooglePlayPublisher(
-            "credentials/gradle-upload-apk-to-play.json",
+            credentialsJsonPath.get(),
             getApplicationId(project),
         )
         publisher.uploadAab(
