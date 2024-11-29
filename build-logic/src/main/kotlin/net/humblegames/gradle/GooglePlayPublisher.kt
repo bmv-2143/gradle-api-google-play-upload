@@ -34,7 +34,7 @@ class GooglePlayPublisher(
         trackName: String,
         rolloutPercentage: Double?,
         trackReleaseName: String,
-        releaseNotes: List<LocalizedText>,
+        releaseNotes: Map<String, String>, // Language code to text
         status: String,
     ) {
         val editId = createEdit(androidPublisher, packageName)
@@ -76,7 +76,7 @@ class GooglePlayPublisher(
         trackReleaseName: String,
         versionCode: Long,
         rolloutPercentage: Double?,
-        releaseNotes: List<LocalizedText>,
+        releaseNotes: Map<String, String>,
         status: String
     ) {
         val track = Track().setTrack(trackName).setReleases(
@@ -85,7 +85,11 @@ class GooglePlayPublisher(
                     .setVersionCodes(listOf(versionCode))
                     .setStatus(status)
                     .setUserFraction(rolloutPercentage)
-                    .setReleaseNotes(releaseNotes)
+                    .setReleaseNotes(
+                        releaseNotes.map { (language, text) ->
+                            LocalizedText().setLanguage(language).setText(text)
+                        }
+                    )
             )
         )
         val trackUpdateRequest = androidPublisher.edits().tracks()

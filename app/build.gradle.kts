@@ -24,8 +24,8 @@ android {
         applicationId = "net.humblegames.hw_gradle_api"
         minSdk = 26
         targetSdk = 34
-        versionCode = 13
-        versionName = "1.0.12"
+        versionCode = 14
+        versionName = "1.0.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -78,12 +78,7 @@ googlePlayPublishExtension {
     releaseName.set(getReleaseName())
     rolloutPercentage.set(0.10)
     status.set("inProgress")
-    releaseNotes.set(
-        listOf(
-            LocalizedText().setLanguage("en-US")
-                .setText("Another release notes from Gradle 5"),
-        )
-    )
+    releaseNotes.putAll(mapOf("en-US" to "Another release notes from Gradle 6"))
 }
 
 // Not required by the assignment: upload via third party plugin:

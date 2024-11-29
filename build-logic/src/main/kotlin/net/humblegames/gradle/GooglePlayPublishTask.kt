@@ -1,12 +1,11 @@
 package net.humblegames.gradle
 
 import com.android.build.gradle.AppExtension
-import com.google.api.services.androidpublisher.model.LocalizedText
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -34,7 +33,7 @@ abstract class GooglePlayPublishTask : DefaultTask() {
     abstract val rolloutPercentage: Property<Double>
 
     @get:Input
-    abstract val releaseNotes: ListProperty<LocalizedText>
+    abstract val releaseNotes: MapProperty<String, String> // Language code to text
 
     @get:PathSensitive(PathSensitivity.NONE)
     @get:InputDirectory
