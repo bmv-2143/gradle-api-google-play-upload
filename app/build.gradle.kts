@@ -6,7 +6,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("GooglePlayPublishPlugin")
+    id("net.humblegames.google-play-publish")
 }
 
 val keystorePropertiesFile = rootProject.file("credentials/keystore.properties")

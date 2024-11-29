@@ -10,7 +10,7 @@ repositories {
 
 gradlePlugin {
     plugins.register("GooglePlayPublishPlugin") {
-        id = "GooglePlayPublishPlugin"
+        id = "net.humblegames.google-play-publish"
         implementationClass = "net.humblegames.gradle.GooglePlayPublishPlugin"
     }
 }
