@@ -5,7 +5,11 @@ import com.google.api.client.http.FileContent
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.androidpublisher.AndroidPublisher
 import com.google.api.services.androidpublisher.AndroidPublisherScopes
-import com.google.api.services.androidpublisher.model.*
+import com.google.api.services.androidpublisher.model.AppEdit
+import com.google.api.services.androidpublisher.model.Bundle
+import com.google.api.services.androidpublisher.model.LocalizedText
+import com.google.api.services.androidpublisher.model.Track
+import com.google.api.services.androidpublisher.model.TrackRelease
 import com.google.auth.http.HttpCredentialsAdapter
 import com.google.auth.oauth2.ServiceAccountCredentials
 import java.io.File
