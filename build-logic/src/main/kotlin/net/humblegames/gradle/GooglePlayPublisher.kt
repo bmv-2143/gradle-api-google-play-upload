@@ -26,7 +26,7 @@ class GooglePlayPublisher(
             GoogleNetHttpTransport.newTrustedTransport(),
             GsonFactory.getDefaultInstance(),
             HttpCredentialsAdapter(credential)
-        ).setApplicationName(USER_AGENT_HEADER_APP_NAME).build()
+        ).setApplicationName(packageName).build()
     }
 
     fun uploadAab(
@@ -100,6 +100,5 @@ class GooglePlayPublisher(
 
     companion object {
         private const val AAB_FILE_CONTENT_TYPE = "application/octet-stream"
-        private const val USER_AGENT_HEADER_APP_NAME = "ExperimentalApp"
     }
 }
