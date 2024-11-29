@@ -15,6 +15,7 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import java.io.IOException
 
 @CacheableTask
 abstract class GooglePlayPublishTask : DefaultTask() {
@@ -48,14 +49,19 @@ abstract class GooglePlayPublishTask : DefaultTask() {
             credentialsJsonPath.get(),
             getApplicationId(project),
         )
-        publisher.uploadAab(
-            pathToAab = aabDir.get().asFile.resolve("app-release.aab").path,
-            trackName = trackToPublish.get(),
-            rolloutPercentage = if (rolloutPercentage.isPresent) rolloutPercentage.get() else null,
-            trackReleaseName = releaseName.get(),
-            releaseNotes = releaseNotes.get(),
-            status = status.get(),
-        )
+
+        try {
+            publisher.uploadAab(
+                pathToAab = aabDir.get().asFile.resolve("app-release.aab").path,
+                trackName = trackToPublish.get(),
+                rolloutPercentage = if (rolloutPercentage.isPresent) rolloutPercentage.get() else null,
+                trackReleaseName = releaseName.get(),
+                releaseNotes = releaseNotes.get(),
+                status = status.get(),
+            )
+        } catch (e: IOException) {
+            throw GradleException("Failed to upload AAB: ${e.message}", e)
+        }
     }
 
     private fun getApplicationId(project: Project) =
