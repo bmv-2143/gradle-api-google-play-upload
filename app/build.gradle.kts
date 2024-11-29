@@ -21,8 +21,8 @@ android {
         applicationId = "net.humblegames.hw_gradle_api"
         minSdk = 26
         targetSdk = 34
-        versionCode = 14
-        versionName = "1.0.13"
+        versionCode = 16
+        versionName = "1.0.15"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -75,7 +75,7 @@ googlePlayPublishExtension {
     releaseName.set(getReleaseName())
     rolloutPercentage.set(0.10)
     status.set("inProgress")
-    releaseNotes.putAll(mapOf("en-US" to "Another release notes from Gradle 6"))
+    releaseNotes.putAll(mapOf("en-US" to "Another release notes from Gradle"))
 }
 
 dependencies {
