@@ -1,12 +1,13 @@
 package net.humblegames.gradle
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.http.FileContent
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.androidpublisher.AndroidPublisher
 import com.google.api.services.androidpublisher.AndroidPublisherScopes
 import com.google.api.services.androidpublisher.model.*
+import com.google.auth.http.HttpCredentialsAdapter
+import com.google.auth.oauth2.ServiceAccountCredentials
 import java.io.File
 import java.io.FileInputStream
 import java.util.Collections
@@ -18,13 +19,13 @@ class GooglePlayPublisher(
 ) {
 
     private val androidPublisher: AndroidPublisher = run {
-        val credential = GoogleCredential
+        val credential = ServiceAccountCredentials
             .fromStream(FileInputStream(credentialsJsonPath))
             .createScoped(Collections.singleton(AndroidPublisherScopes.ANDROIDPUBLISHER))
         AndroidPublisher.Builder(
             GoogleNetHttpTransport.newTrustedTransport(),
             GsonFactory.getDefaultInstance(),
-            credential
+            HttpCredentialsAdapter(credential)
         ).setApplicationName(USER_AGENT_HEADER_APP_NAME).build()
     }
 
