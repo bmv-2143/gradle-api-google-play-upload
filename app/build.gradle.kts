@@ -1,5 +1,3 @@
-import com.github.triplet.gradle.androidpublisher.ReleaseStatus
-import com.google.api.services.androidpublisher.model.LocalizedText
 import java.io.FileInputStream
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -8,7 +6,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.triplet.play)
     id("GooglePlayPublishPlugin")
 }
 
@@ -79,17 +76,6 @@ googlePlayPublishExtension {
     rolloutPercentage.set(0.10)
     status.set("inProgress")
     releaseNotes.putAll(mapOf("en-US" to "Another release notes from Gradle 6"))
-}
-
-// Not required by the assignment: upload via third party plugin:
-// https://github.com/Triple-T/gradle-play-publisher
-play {
-    defaultToAppBundles.set(true)
-    releaseName.set(getReleaseName())
-    track.set("internal")
-    defaultToAppBundles.set(true)
-    releaseStatus.set(ReleaseStatus.DRAFT)
-    serviceAccountCredentials.set(file("../credentials/gradle-upload-apk-to-play.json"))
 }
 
 dependencies {
